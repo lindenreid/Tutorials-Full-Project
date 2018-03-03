@@ -75,6 +75,7 @@ Material:
     - _HighlightExtrusion: 0.01
     - _HighlightScale: 0.01
     - _K: 1.37
+    - _Matte: 2.25
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -82,7 +83,7 @@ Material:
     - _Parallax: 0.02
     - _Power: 5.64
     - _Scale: 5.43
-    - _Shininess: 1
+    - _Shininess: 10
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -96,3 +97,4 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightColor: {r: 1, g: 0.9440162, b: 0.8235294, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
