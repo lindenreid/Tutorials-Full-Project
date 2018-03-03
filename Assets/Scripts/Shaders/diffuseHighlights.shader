@@ -4,8 +4,7 @@ Shader "Custom/DiffuseHighlights"
 	{
 		_MainTex("Texture", 2D) = "white" {}
         _HighlightColor("Hightlight Color", Color) = (1, 1, 1, 1)
-        _HighlightExtrusion("Highlight Size", float) = 0.08
-        _HighlightScale("Highlight Scale", float) = -1
+        _HighlightScale("Highlight Scale", float) = 1
         _BrightColor("Light Color", Color) = (1, 1, 1, 1)
         _DarkColor("Dark Color", Color) = (1, 1, 1, 1)
         _K("Shadow Intensity", float) = 1.0
@@ -17,7 +16,7 @@ Shader "Custom/DiffuseHighlights"
         // Outline pass
         Pass
         {
-            Cull Front 
+            Cull Front
 
             CGPROGRAM
             #pragma vertex vert
@@ -40,7 +39,6 @@ Shader "Custom/DiffuseHighlights"
 			struct vertexOutput
 			{
 				float4 pos : SV_POSITION;
-				float4 color : TEXCOORD0;
 			};
 
 			vertexOutput vert(vertexInput input)
@@ -49,17 +47,13 @@ Shader "Custom/DiffuseHighlights"
 
 				float4 newPos = input.vertex;
 
-                // _WorldSpaceLightPos0 provided by Unity
-				float4 lightDir = normalize(_WorldSpaceLightPos0);
+				float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
+				float4 normal4 = float4(input.normal, 0.0);
+				float3 normal = normalize(mul(normal4, unity_WorldToObject).xyz);
 
-                float lightDot = dot(input.normal, lightDir);
-                float lightThickness = _HighlightExtrusion * (lightDot);
+                float lightDot = saturate(dot(normal, lightDir));
+				newPos += float4(input.normal, 0.0) * lightDot * _HighlightScale;
 
-				// normal extrusion technique
-				float3 normal = normalize(input.normal);
-				newPos += (float4(normal, 0.0) + lightDir*_HighlightScale) * lightThickness;
-
-				// convert to world space
 				output.pos = UnityObjectToClipPos(newPos);
 
 				return output;

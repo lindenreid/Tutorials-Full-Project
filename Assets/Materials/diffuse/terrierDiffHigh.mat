@@ -64,8 +64,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _HighlightExtrusion: 0.0001
-    - _HighlightScale: 1
+    - _HighlightExtrusion: 0.0002
+    - _HighlightScale: 0.0004
     - _K: 2
     - _Metallic: 0
     - _Mode: 0

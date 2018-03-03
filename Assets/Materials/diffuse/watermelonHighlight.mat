@@ -73,7 +73,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HighlightExtrusion: 0.01
-    - _HighlightScale: 1
+    - _HighlightScale: 0.01
     - _K: 1.37
     - _Metallic: 0
     - _Mode: 0
