@@ -12,6 +12,11 @@ Shader "Custom/Ice"
 	
 	SubShader
 	{
+        Tags
+        {
+            "Queue" = "Transparent"
+        }
+
         // Grab the screen behind the object into _BackgroundTexture
         GrabPass
         {
@@ -21,11 +26,6 @@ Shader "Custom/Ice"
         // Background distortion
         Pass
         {
-            Tags
-            {
-                "Queue" = "Transparent"
-            }
-
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -53,7 +53,7 @@ Shader "Custom/Ice"
             {
                 vertexOutput output;
 
-                // convert input to world space
+                // convert input to world/clip space
                 output.pos = UnityObjectToClipPos(input.vertex);
                 float4 normal4 = float4(input.normal, 0.0);
 				float3 normal = normalize(mul(normal4, unity_WorldToObject).xyz);

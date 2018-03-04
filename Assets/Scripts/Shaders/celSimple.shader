@@ -12,6 +12,12 @@
 		// Regular color & lighting pass
 		Pass
 		{
+			Tags
+            {
+                "Queue" = "Transparent"
+            }
+			Blend SrcAlpha OneMinusSrcAlpha // standard alpha blending
+
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -66,7 +72,7 @@
 
 				// _LightColor0 provided by Unity
 				float3 rgb = albedo.rgb * _LightColor0.rgb * lighting * _Color.rgb;
-				return float4(rgb, 1.0);
+				return float4(rgb, _Color.a);
 			}
 
 			ENDCG

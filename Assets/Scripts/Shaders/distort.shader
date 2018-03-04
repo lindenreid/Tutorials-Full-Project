@@ -1,9 +1,19 @@
 ﻿Shader "Custom/Distort"
 {
+    Properties
+    {
+        _Noise("Bump", 2D) = "white" {}
+        _StrengthFilter("Strength Filter", 2D) = "white" {}
+        _Strength("Distort Strength", float) = 1.0
+        _Speed("Distort Speed", float) = 1.0
+    }
+
     SubShader
     {
-        // Draw ourselves after all opaque geometry
-        Tags { "Queue" = "Transparent" }
+        Tags 
+        {
+            "Queue" = "Transparent"
+        }
 
         // Grab the screen behind the object into _BackgroundTexture
         GrabPass
@@ -19,30 +29,50 @@
             #pragma fragment frag
             #include "UnityCG.cginc"
 
-            struct v2f
+            // Properties
+            sampler2D _Noise;
+            sampler2D _StrengthFilter;
+            sampler2D _BackgroundTexture;
+            float     _Strength;
+            float     _Speed;
+
+            struct vertexInput
             {
-                float4 grabPos : TEXCOORD0;
-                float4 pos : SV_POSITION;
+                float4 vertex : POSITION;
+                float3 texCoord : TEXCOORD0;
             };
 
-            v2f vert(appdata_base v) {
-                v2f o;
-                // use UnityObjectToClipPos from UnityCG.cginc to calculate 
-                // the clip-space of the vertex
-                o.pos = UnityObjectToClipPos(v.vertex);
+            struct vertexOutput
+            {
+                float4 pos : SV_POSITION;
+                float4 grabPos : TEXCOORD0;
+            };
+
+            vertexOutput vert(vertexInput input)
+            {
+                vertexOutput output;
+
+                // convert input to clip space
+                output.pos = UnityObjectToClipPos(input.vertex);
+
                 // use ComputeGrabScreenPos function from UnityCG.cginc
                 // to get the correct texture coordinate
-                o.grabPos = ComputeGrabScreenPos(o.pos);
-                return o;
+                output.grabPos = ComputeGrabScreenPos(output.pos);
+
+                // distort based on noise & strength filter
+                float noise = tex2Dlod(_Noise, float4(input.texCoord, 0)).rgb;
+                float3 filt = tex2Dlod(_StrengthFilter, float4(input.texCoord, 0)).rgb;
+                output.grabPos.x += cos(noise*_Time.x*_Speed) * filt * _Strength;
+                output.grabPos.y += sin(noise*_Time.x*_Speed) * filt * _Strength;
+
+                return output;
             }
 
-            sampler2D _BackgroundTexture;
-
-            half4 frag(v2f i) : SV_Target
+            float4 frag(vertexOutput input) : COLOR
             {
-                half4 bgcolor = tex2Dproj(_BackgroundTexture, i.grabPos);
-                return 1 - bgcolor;
+                return tex2Dproj(_BackgroundTexture, input.grabPos);
             }
+
             ENDCG
         }
 
