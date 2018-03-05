@@ -1,4 +1,4 @@
-Shader "Custom/DiffuseHighlights"
+Shader "Custom/ThickOutline"
 {
 	Properties
 	{
@@ -13,6 +13,12 @@ Shader "Custom/DiffuseHighlights"
 
 	SubShader
 	{
+        // Grab the screen behind the object into _BackgroundTexture
+        GrabPass
+        {
+            "_BackgroundTexture"
+        }
+
         // Outline pass
         Pass
         {
@@ -21,20 +27,24 @@ Shader "Custom/DiffuseHighlights"
             CGPROGRAM
             #pragma vertex vert
 			#pragma fragment frag
+            #include "UnityCG.cginc"
 
 			// Properties
+            sampler2D _BackgroundTexture;
 			uniform float4 _HighlightColor;
             uniform float _HighlightScale;
 
 			struct vertexInput
 			{
 				float4 vertex : POSITION;
-				float3 normal : NORMAL;
+                float3 normal : NORMAL;
+				float3 texCoord : TEXCOORD0;
 			};
 
 			struct vertexOutput
 			{
 				float4 pos : SV_POSITION;
+                float4 grabPos : TEXCOORD0;
 			};
 
 			vertexOutput vert(vertexInput input)
@@ -42,22 +52,17 @@ Shader "Custom/DiffuseHighlights"
 				vertexOutput output;
 
 				float4 newPos = input.vertex;
-
-				float4 normal4 = float4(input.normal, 0.0);
-				float3 normal = normalize(mul(normal4, unity_WorldToObject).xyz);
-				float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
-
-                float lightDot = saturate(dot(normal, lightDir));
-				newPos += float4(input.normal, 0.0) * lightDot * _HighlightScale;
-				
+				newPos += float4(input.normal, 0.0) * _HighlightScale;
 				output.pos = UnityObjectToClipPos(newPos);
+
+                output.grabPos = ComputeGrabScreenPos(output.pos);
 
 				return output;
 			}
 
 			float4 frag(vertexOutput input) : COLOR
 			{
-				return _HighlightColor;
+				return tex2Dproj(_BackgroundTexture, input.grabPos);
 			}
             ENDCG
         }

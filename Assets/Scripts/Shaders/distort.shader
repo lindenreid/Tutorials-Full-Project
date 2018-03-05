@@ -13,6 +13,7 @@
         Tags 
         {
             "Queue" = "Transparent"
+            "DisableBatching" = "True"
         }
 
         // Grab the screen behind the object into _BackgroundTexture
@@ -24,6 +25,8 @@
         // Render the object with the texture generated above, and invert the colors
         Pass
         {
+            ZTest Always
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -40,6 +43,7 @@
             {
                 float4 vertex : POSITION;
                 float3 texCoord : TEXCOORD0;
+                float3 normal: NORMAL;
             };
 
             struct vertexOutput
@@ -51,9 +55,11 @@
             vertexOutput vert(vertexInput input)
             {
                 vertexOutput output;
-
-                // convert input to clip space
-                output.pos = UnityObjectToClipPos(input.vertex);
+                
+                // billboard to camera
+                float4 newPos = input.vertex;
+                newPos = mul(UNITY_MATRIX_P, mul(UNITY_MATRIX_MV, float4(0, 0, 0, 1)) + float4(newPos.x, newPos.z, 0, 0));
+                output.pos = newPos;                
 
                 // use ComputeGrabScreenPos function from UnityCG.cginc
                 // to get the correct texture coordinate
@@ -70,6 +76,7 @@
 
             float4 frag(vertexOutput input) : COLOR
             {
+                //return float4(1,1,1,1); // billboard test
                 return tex2Dproj(_BackgroundTexture, input.grabPos);
             }
 
