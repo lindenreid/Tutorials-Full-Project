@@ -2,7 +2,7 @@
 {
     Properties
     {
-        _Noise("Bump", 2D) = "white" {}
+        _Noise("Noise", 2D) = "white" {}
         _StrengthFilter("Strength Filter", 2D) = "white" {}
         _Strength("Distort Strength", float) = 1.0
         _Speed("Distort Speed", float) = 1.0
@@ -43,7 +43,6 @@
             {
                 float4 vertex : POSITION;
                 float3 texCoord : TEXCOORD0;
-                float3 normal: NORMAL;
             };
 
             struct vertexOutput
@@ -57,9 +56,11 @@
                 vertexOutput output;
                 
                 // billboard to camera
-                float4 newPos = input.vertex;
-                newPos = mul(UNITY_MATRIX_P, mul(UNITY_MATRIX_MV, float4(0, 0, 0, 1)) + float4(newPos.x, newPos.z, 0, 0));
-                output.pos = newPos;                
+                float4 pos = input.vertex;
+                pos = mul(UNITY_MATRIX_P, 
+                      mul(UNITY_MATRIX_MV, float4(0, 0, 0, 1))
+                          + float4(pos.x, pos.z, 0, 0));
+                output.pos = pos;                
 
                 // use ComputeGrabScreenPos function from UnityCG.cginc
                 // to get the correct texture coordinate
