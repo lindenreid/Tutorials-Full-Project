@@ -3,38 +3,43 @@ Shader "Custom/Bloom"
 	HLSLINCLUDE
 
     #include "../../PostProcessing-2/PostProcessing/Shaders/StdLib.hlsl"
+    #include "../../PostProcessing-2/PostProcessing/Shaders/Colors.hlsl"
+    #pragma target 3.0
 
     TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
-    TEXTURE2D_SAMPLER2D(_BlurTex, sampler_BlurTex);
     TEXTURE2D_SAMPLER2D(_CameraDepthTexture, sampler_CameraDepthTexture);
+    TEXTURE2D_SAMPLER2D(_BlurTex, sampler_BlurTex);
     float _Intensity;
 
     float4 Frag(VaryingsDefault i) : SV_TARGET
     {
-        // sample depth value on blur texture
-        float depthBlur = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_BlurTex, sampler_BlurTex, i.texcoordStereo));
+        // sample depth values
+        float4 depthCam = Linear01Depth( SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, float2(i.texcoordStereo.x, i.texcoordStereo.y)) );
+        float4 depthBlur = Linear01Depth( SAMPLE_DEPTH_TEXTURE(_BlurTex, sampler_BlurTex, float2(i.texcoordStereo.x, i.texcoordStereo.y)) );
 
-        // sample depth value on camera texture;
-        float depthCam = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, i.texcoordStereo));
+        // check which pixel is closer
+        float blurCloser = depthBlur.x < depthCam.x;
 
-        // check if blur texture depth value is lower than camera depth value
-        float blurCloser = depthBlur < depthCam;
-
-        // sample both textures
+        // sample textures
         float4 base = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.texcoord.xy);
         float4 blur = SAMPLE_TEXTURE2D(_BlurTex, sampler_BlurTex, i.texcoord.xy);
         
-        return base + float4(1,0,0,1);
-        //return base + blur;
-        //return float4(depthBlur, depthBlur, depthBlur, 1); // test blur texture depth sample
-        //return float4(depthCam, depthCam, depthCam, 1); // test camera depth sample
+        //return depthCam; // test camera depth sample
+        return depthBlur; // test blur depth sample
+        //return float4(blurCloser, blurCloser, blurCloser, 1); // check difference
     }
 
     ENDHLSL
 
     SubShader
     {
-        Cull Off ZWrite Off ZTest Always 
+        Tags
+        {
+            "RenderType" = "Opaque"
+        }
+        Cull Off
+        ZWrite Off
+        ZTest Always
 
         Pass 
         {
