@@ -20,6 +20,7 @@ Shader "Custom/CelMultipleLights"
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile_fwdbase // shadows
             #include "AutoLight.cginc"
 			#include "UnityCG.cginc"
 			
@@ -41,6 +42,7 @@ Shader "Custom/CelMultipleLights"
 				float4 pos : SV_POSITION;
 				float3 normal : NORMAL;
 				float3 texCoord : TEXCOORD0;
+				LIGHTING_COORDS(1,2) // shadows
 			};
 
 			vertexOutput vert(vertexInput input)
@@ -54,6 +56,7 @@ Shader "Custom/CelMultipleLights"
 
 				output.texCoord = input.texCoord;
 
+				TRANSFER_VERTEX_TO_FRAGMENT(output); // shadows
 				return output;
 			}
 
@@ -73,7 +76,8 @@ Shader "Custom/CelMultipleLights"
                 // ambient light
                 float3 ambient = UNITY_LIGHTMODEL_AMBIENT.rgb;
 
-				float3 rgb = albedo.rgb * _LightColor0.rgb * lighting * _Color.rgb * ambient;
+				float attenuation = LIGHT_ATTENUATION(input); // shadow value
+				float3 rgb = albedo.rgb * _LightColor0.rgb * lighting * _Color.rgb * ambient * attenuation;
 				return float4(rgb, _Color.a);
 			}
 
@@ -155,5 +159,38 @@ Shader "Custom/CelMultipleLights"
 
 			ENDCG
 		}
+
+		// Shadow pass
+		Pass
+    	{
+			Name "ShadowCaster"
+            Tags 
+			{
+				"LightMode" = "ShadowCaster"
+			}
+
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_shadowcaster
+            #include "UnityCG.cginc"
+
+            struct v2f { 
+                V2F_SHADOW_CASTER;
+            };
+
+            v2f vert(appdata_base v)
+            {
+                v2f o;
+                TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+                return o;
+            }
+
+            float4 frag(v2f i) : SV_Target
+            {
+                SHADOW_CASTER_FRAGMENT(i)
+            }
+            ENDCG
+    	}
 	}
 }

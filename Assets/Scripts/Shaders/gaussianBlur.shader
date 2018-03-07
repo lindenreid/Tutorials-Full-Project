@@ -64,7 +64,7 @@ Shader "Custom/GaussianBlur"
                 float4 blurX = gaussianBlur(float2(1,0), input.uv, resX);
                 float4 blurY = gaussianBlur(float2(0,1), input.uv, resY);
 
-				return blurX * blurY;
+				return blurX + blurY;
 			}
 
 			ENDCG
