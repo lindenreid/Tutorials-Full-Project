@@ -6,6 +6,7 @@
         _StrengthFilter("Strength Filter", 2D) = "white" {}
         _Strength("Distort Strength", float) = 1.0
         _Speed("Distort Speed", float) = 1.0
+        _Size("Size", vector) = (1,1,1,1)
     }
 
     SubShader
@@ -38,6 +39,7 @@
             sampler2D _BackgroundTexture;
             float     _Strength;
             float     _Speed;
+            float4    _Size;
 
             struct vertexInput
             {
@@ -59,7 +61,8 @@
                 float4 pos = input.vertex;
                 pos = mul(UNITY_MATRIX_P, 
                       mul(UNITY_MATRIX_MV, float4(0, 0, 0, 1))
-                          + float4(pos.x, pos.z, 0, 0));
+                          + float4(pos.x, pos.z, 0, 0))
+                          * _Size;
                 output.pos = pos;                
 
                 // use ComputeGrabScreenPos function from UnityCG.cginc

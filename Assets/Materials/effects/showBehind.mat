@@ -78,4 +78,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SilColor: {r: 0.2724391, g: 0.875, b: 0.2509191, a: 1}
+    - _SilColor: {r: 0.27243897, g: 0.83137256, b: 0.25091895, a: 0.29803923}

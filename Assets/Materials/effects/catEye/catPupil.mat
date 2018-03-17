@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Distort
-  m_Shader: {fileID: 4800000, guid: 83ff1298eaf297147a3bb9ff1503aa8b, type: 3}
+  m_Name: catPupil
+  m_Shader: {fileID: 4800000, guid: 388ac8f3174403c4dbd0131aa30b3f1c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -46,10 +46,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Noise:
-        m_Texture: {fileID: 2800000, guid: 8d2fbf413ab6f924fa5030a8b87f9ee5, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -58,34 +54,34 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _StrengthFilter:
-        m_Texture: {fileID: 2800000, guid: f1c65e4c5d77e88409344c1e0258fea3, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BillboardRadius: 4
     - _BumpScale: 1
+    - _ColorRadius: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DistortSpeed: 1
-    - _DistortStrength: 1
     - _DstBlend: 0
+    - _EyeDist: 0.145
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OuterRadius: 0.23
     - _Parallax: 0.02
+    - _PupilRadius: 0.2
+    - _Radius: 0.2
     - _SmoothnessTextureChannel: 0
+    - _Spec1: 1
+    - _Spec2: 1
+    - _SpecCutoff: 0.5
     - _SpecularHighlights: 1
-    - _Speed: 600
     - _SrcBlend: 1
-    - _Strength: 0.08
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Size: {r: 1, g: 1, b: 1, a: 1}
-    - _Translation: {r: 0, g: 0, b: 5, a: 0}
+    - _OuterColor: {r: 0.40938747, g: 0.6509434, b: 0.20572266, a: 1}
+    - _PupilColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}

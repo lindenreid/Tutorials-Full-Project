@@ -4,7 +4,6 @@ Shader "Custom/Silouette Behind Stuff"
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_RampTex("Ramp", 2D) = "white" {}
-		_Color("Color", Color) = (1, 1, 1, 1)
 		_SilColor("Silouette Color", Color) = (0, 0, 0, 1)
 	}
 
@@ -37,7 +36,6 @@ Shader "Custom/Silouette Behind Stuff"
 			// Properties
 			sampler2D _MainTex;
 			sampler2D _RampTex;
-			float4 _Color;
 			float4 _LightColor0; // provided by Unity
 
 			struct vertexInput
@@ -79,7 +77,7 @@ Shader "Custom/Silouette Behind Stuff"
 				float4 albedo = tex2D(_MainTex, input.texCoord.xy);
 
 				float attenuation = LIGHT_ATTENUATION(input); // shadow value
-				float3 rgb = albedo.rgb * _LightColor0.rgb * lighting * _Color.rgb * attenuation;
+				float3 rgb = albedo.rgb * _LightColor0.rgb * lighting * attenuation;
 				return float4(rgb, 1.0);
 			}
 
@@ -118,7 +116,7 @@ Shader "Custom/Silouette Behind Stuff"
             ENDCG
     	}
 
-		// Silouette pass
+		// Silouette pass 1 (backfaces)
 		Pass
 		{
 			Tags
@@ -126,13 +124,13 @@ Shader "Custom/Silouette Behind Stuff"
                 "Queue" = "Transparent"
             }
 			// Won't draw where it sees ref value 4
-			Cull OFF
+			Cull Front // draw back faces
 			ZWrite OFF
 			ZTest Always
 			Stencil
 			{
-				Ref 4
-				Comp notequal
+				Ref 3
+				Comp Greater
 				Fail keep
 				Pass replace
 			}
@@ -148,7 +146,57 @@ Shader "Custom/Silouette Behind Stuff"
 			struct vertexInput
 			{
 				float4 vertex : POSITION;
-				float3 normal : NORMAL;
+			};
+
+			struct vertexOutput
+			{
+				float4 pos : SV_POSITION;
+			};
+
+			vertexOutput vert(vertexInput input)
+			{
+				vertexOutput output;
+				output.pos = UnityObjectToClipPos(input.vertex);
+				return output;
+			}
+
+			float4 frag(vertexOutput input) : COLOR
+			{
+				return _SilColor;
+			}
+
+			ENDCG
+		}
+
+		// Silouette pass 2 (front faces)
+		Pass
+		{
+			Tags
+            {
+                "Queue" = "Transparent"
+            }
+			// Won't draw where it sees ref value 4
+			Cull Back // draw front faces
+			ZWrite OFF
+			ZTest Always
+			Stencil
+			{
+				Ref 4 
+				Comp NotEqual
+				Pass keep
+			}
+			Blend SrcAlpha OneMinusSrcAlpha
+
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+
+			// Properties
+			uniform float4 _SilColor;
+
+			struct vertexInput
+			{
+				float4 vertex : POSITION;
 			};
 
 			struct vertexOutput
