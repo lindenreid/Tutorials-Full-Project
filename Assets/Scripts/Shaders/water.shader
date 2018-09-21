@@ -128,8 +128,8 @@
 
 				// apply wave animation
 				float noiseSample = tex2Dlod(_NoiseTex, float4(input.texCoord.xy, 0, 0));
-				output.pos.y += sin(_Time*_WaveSpeed*noiseSample)*_WaveAmp + _ExtraHeight;
-				output.pos.x += cos(_Time*_WaveSpeed*noiseSample)*_WaveAmp;
+				//output.pos.y += sin(_Time*_WaveSpeed*noiseSample)*_WaveAmp + _ExtraHeight;
+				//output.pos.x += cos(_Time*_WaveSpeed*noiseSample)*_WaveAmp;
 
 				// compute depth
 				output.screenPos = ComputeScreenPos(output.pos);
@@ -144,16 +144,21 @@
 			{
 				// apply depth texture
 				float4 depthSample = SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, input.screenPos);
-				float depth = LinearEyeDepth(depthSample).r;
+				float depth = LinearEyeDepth(depthSample).r; 
 
 				// create foamline
-				float foamLine = 1 - saturate(_DepthFactor * (depth - input.screenPos.w));
+				float foamLine = saturate(_DepthFactor * (depth - input.screenPos.w));  
 				float4 foamRamp = float4(tex2D(_DepthRampTex, float2(foamLine, 0.5)).rgb, 1.0);
+
+				//float4 fakeDepth = float4(depth- input.screenPos.w, 0, 0, 1);
+				float4 fakeDepth = foamLine;
 
 				// sample main texture
 				float4 albedo = tex2D(_MainTex, input.texCoord.xy);
 
-			    float4 col = _Color * foamRamp * albedo;
+			    //float4 col = _Color * foamRamp * albedo;
+				//float4 col = float4(depth, depth, depth, 1);
+				float4 col = fakeDepth;
                 return col;
 			}
 

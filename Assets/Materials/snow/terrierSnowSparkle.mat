@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Ice
-  m_Shader: {fileID: 4800000, guid: 54deae4feaa895241979f78128bf15cf, type: 3}
+  m_Name: terrierSnowSparkle
+  m_Shader: {fileID: 4800000, guid: d06fad1267fec304b9b0e9c5160e7f12, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -27,7 +27,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpTex:
-        m_Texture: {fileID: 2800000, guid: 8d2fbf413ab6f924fa5030a8b87f9ee5, type: 3}
+        m_Texture: {fileID: 2800000, guid: c3df3b59cded17c4192b738ea1b135fa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -47,7 +47,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ca8f450fea9e11d448881dfeddd10ecc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,16 +63,26 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampTex:
+        m_Texture: {fileID: 2800000, guid: a583c1ddc1809b54b835c7f5e36a89f4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowBump:
+        m_Texture: {fileID: 2800000, guid: c3df3b59cded17c4192b738ea1b135fa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowRamp:
         m_Texture: {fileID: 2800000, guid: 46e110dec7e50534bbcfcfc072329e97, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SnowSparkle:
+        m_Texture: {fileID: 2800000, guid: c3df3b59cded17c4192b738ea1b135fa, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DistortStrength: 0.2
     - _DstBlend: 0
-    - _EdgeThickness: 0.26
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -81,11 +91,15 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
+    - _SnowLevel: 0.0016
+    - _SparklePow: 1.5
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.09803922}
-    - _EdgeColor: {r: 0.38013625, g: 0.64306235, b: 0.6544118, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SnowColor: {r: 0.93813795, g: 0.8820755, b: 1, a: 1}
+    - _SnowDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _SparkleColor: {r: 1, g: 1, b: 1, a: 1}

@@ -54,6 +54,7 @@
 				float4 grabPos : TEXCOORD1;
 			};
 
+			// https://github.com/mattdesl/lwjgl-basics/wiki/ShaderLesson5
 			float4 gaussianBlur(float2 dir, float4 grabPos, float res, sampler2D tex, float radius)
             {
                 //this will be our RGBA sum

@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Ice
+  m_Name: icetest
   m_Shader: {fileID: 4800000, guid: 54deae4feaa895241979f78128bf15cf, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -27,7 +27,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpTex:
-        m_Texture: {fileID: 2800000, guid: 8d2fbf413ab6f924fa5030a8b87f9ee5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 99a69b0eb8474d44c9bb029d3daa2dcb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -86,6 +86,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.09803922}
-    - _EdgeColor: {r: 0.38013625, g: 0.64306235, b: 0.6544118, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.11764706}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

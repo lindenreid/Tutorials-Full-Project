@@ -125,14 +125,14 @@ Shader "Custom/Silouette Behind Stuff"
             }
 			// Won't draw where it sees ref value 4
 			Cull Front // draw back faces
-			ZWrite OFF
+			ZWrite Off
 			ZTest Always
 			Stencil
 			{
 				Ref 3
 				Comp Greater
 				Fail keep
-				Pass replace
+		        Pass replace
 			}
 			Blend SrcAlpha OneMinusSrcAlpha
 
@@ -169,7 +169,7 @@ Shader "Custom/Silouette Behind Stuff"
 		}
 
 		// Silouette pass 2 (front faces)
-		Pass
+	    Pass
 		{
 			Tags
             {
@@ -183,7 +183,7 @@ Shader "Custom/Silouette Behind Stuff"
 			{
 				Ref 4 
 				Comp NotEqual
-				Pass keep
+				Pass Keep
 			}
 			Blend SrcAlpha OneMinusSrcAlpha
 
