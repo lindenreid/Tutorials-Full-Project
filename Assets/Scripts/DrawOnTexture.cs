@@ -9,7 +9,6 @@ public class DrawOnTexture : MonoBehaviour {
 	public Renderer destinationRenderer;
 	public int TextureSize;
 	public int Radius;
-	public float maxSeconds = 30;
 	public Color BlurColor;
 
 	private Texture2D texture;
@@ -26,7 +25,6 @@ public class DrawOnTexture : MonoBehaviour {
 		}
 		texture.Apply();
 		destinationRenderer.material.SetTexture("_MouseMap", texture);
-		destinationRenderer.material.SetFloat("_MaxSeconds", maxSeconds);
 	}
 
 	void OnMouseDrag ()
@@ -38,9 +36,10 @@ public class DrawOnTexture : MonoBehaviour {
         {
 			// younger = redder (higher r)
 			// older = blacker
-			float r = Time.timeSinceLevelLoad / maxSeconds;
-			Debug.Log("Time: " + Time.timeSinceLevelLoad + "; r: " + r);
-			Color color = new Color(r, 0, 0, 1);
+			//Debug.Log("Time: " + Time.timeSinceLevelLoad + "; r: " + r);
+			Color color = new Color(Time.timeSinceLevelLoad, 0, 0, 1);
+			//Debug.Log("r: " + color.r);
+			//Color color = new Color(1, 0, 0, 1);
 
 			int x = (int)(hit.textureCoord.x*texture.width);
 			int y = (int)(hit.textureCoord.y*texture.height);

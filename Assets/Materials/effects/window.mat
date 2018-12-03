@@ -68,7 +68,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MaxAge: 10
+    - _MaxAge: 1
     - _MaxSeconds: 0
     - _Metallic: 0
     - _Mode: 0
